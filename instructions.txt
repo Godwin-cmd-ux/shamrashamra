@@ -1,0 +1,1246 @@
+# MASTER IMPLEMENTATION PROMPT: SHAMRASHAMRA.COM
+
+## Professional Multi-Event Management, Digital Invitations, QR Guest Verification, and Event Financial Management Platform
+
+**PROJECT NAME:** ShamraShamra
+**DOMAIN:** shamrashamra.com
+**PRODUCT TYPE:** Multi-tenant, multi-event management SaaS platform
+**INITIAL TARGET MARKET:** Tanzania, with an architecture that supports international expansion
+**PRIMARY LANGUAGES:** Swahili and English
+**PRIMARY USERS:** Individual event organizers, wedding committees, professional event planners, event staff, and guests
+**CORE TECHNOLOGY:** Laravel, Blade, Tailwind CSS, JavaScript, and PostgreSQL
+**DEPLOYMENT TARGET:** Production-ready Ubuntu VPS with HTTPS, secure database configuration, automated backups, and server hardening.
+
+---
+
+# 1. YOUR ROLE AND MISSION
+
+Act as a senior software architect, senior Laravel engineer, PostgreSQL database architect, UI/UX designer, application security engineer, QA engineer, and DevOps engineer.
+
+Your mission is to design, implement, test, and prepare ShamraShamra.com for production as a professional event management platform.
+
+The platform must allow users to create and manage weddings, sendoffs, kitchen parties, birthdays, graduations, anniversaries, corporate events, and other celebrations.
+
+The platform must combine:
+
+1. Event creation and management.
+2. Professional digital invitation card design.
+3. Unique QR-code invitations and secure guest verification.
+4. Guest registration, invitations, RSVP, and attendance tracking.
+5. Event committee and staff management.
+6. Contribution and pledge tracking.
+7. Event budgets and expense management.
+8. Vendor management.
+9. Reporting and analytics.
+10. Platform administration and future monetization.
+
+This is a real application, not a UI prototype.
+
+Every implemented feature must have a working user interface, validated backend logic, appropriate database persistence, authorization, error handling, and meaningful tests.
+
+Do not pretend that a feature works merely because its page renders.
+
+# 2. STRICT OPERATING RULES — NON-NEGOTIABLE
+
+## 2.1 Inspect Before Changing Anything
+
+Before writing or modifying code:
+
+* Inspect the complete existing repository structure.
+* Identify the Laravel version, PHP version, Node version if relevant, package manager, frontend build system, PostgreSQL connection configuration, installed packages, authentication system, route structure, middleware, policies, models, migrations, Blade templates, controllers, services, jobs, and tests.
+* Read the existing project documentation and environment examples.
+* Identify unfinished implementations, duplicated functionality, security problems, and architectural inconsistencies.
+* Determine whether the repository is empty, an existing Laravel project, or a partially developed application.
+* Inspect the current database schema and migration history before proposing database changes.
+* Identify deployment constraints and available integrations.
+
+Create an implementation plan based on actual repository evidence.
+
+Never assume a file, table, route, package, service, or environment variable exists without checking.
+
+## 2.2 Preserve Existing Work
+
+When working inside an existing repository:
+
+* Preserve functioning features unless a change is explicitly necessary and approved.
+* Do not replace the entire project to implement a feature.
+* Do not arbitrarily redesign unrelated pages.
+* Do not delete working routes, migrations, authentication logic, components, or configuration.
+* Do not rename database columns or tables casually.
+* Do not change production configuration or deployment behavior without authorization.
+* Do not overwrite user modifications.
+* Do not perform destructive database operations.
+* Do not reset, truncate, or drop production databases.
+* Do not expose `.env`, credentials, API keys, private keys, payment secrets, or database passwords.
+* Do not commit secrets or generated sensitive data.
+
+Before editing, inspect Git status if Git is available. Preserve pre-existing user changes and work on a dedicated branch when appropriate.
+
+## 2.3 One Controlled Implementation Phase at a Time
+
+This project must be developed through controlled phases.
+
+**First assignment:** repository inspection, risk assessment, requirements verification, architecture proposal, and implementation roadmap only.
+
+During the first assignment:
+
+* Do not modify application code.
+* Do not execute database migrations.
+* Do not install or remove packages.
+* Do not change environment variables.
+* Do not deploy anything.
+* Do not run destructive commands.
+* Do not implement features prematurely.
+
+Produce a report explaining the current state, proposed architecture, database design, dependencies, risks, and ordered implementation phases.
+
+Then STOP and wait for explicit approval.
+
+For subsequent work, implement only the phase explicitly authorized by the project owner.
+
+After completing an authorized phase, run appropriate tests, report the changed files and results, identify unresolved issues, and STOP.
+
+Never automatically continue to the next phase.
+
+The project owner must explicitly authorize each subsequent phase.
+
+## 2.4 Truthfulness and Quality
+
+* Never claim that tests passed unless they were executed and passed.
+* Never claim that a payment integration works without a verified end-to-end test.
+* Never invent credentials, API responses, database columns, or service configurations.
+* Never silently replace a failed integration with mock data.
+* Clearly label any mock implementation used during development.
+* Do not hide exceptions behind generic success messages.
+* Do not suppress errors merely to make the dashboard appear functional.
+* If a requirement is ambiguous or dangerous, explain the ambiguity and request clarification before proceeding.
+* Prefer small, reviewable changes over large uncontrolled rewrites.
+
+# 3. PRODUCT VISION AND ARCHITECTURE
+
+Build ShamraShamra as a multi-event SaaS platform.
+
+One registered organizer must be able to manage multiple events under the same account.
+
+Examples include:
+
+* A person organizing their wedding.
+* A family organizing a sendoff.
+* A kitchen-party committee.
+* A professional wedding planner managing multiple clients.
+* An organization managing corporate celebrations.
+
+Each event must have its own independently managed guests, invitations, staff, contributions, expenses, vendors, settings, and attendance records.
+
+Use a stable, unique event identifier for all event-specific relationships. Do not identify events by their names.
+
+For the initial architecture, use:
+
+* Laravel for backend business logic.
+* Blade for server-rendered pages.
+* Tailwind CSS for styling.
+* JavaScript for interactive interfaces and QR scanning.
+* PostgreSQL for relational data.
+* Laravel authentication and authorization.
+* Laravel queues for appropriate background tasks.
+* Private object storage for sensitive uploads and generated assets where appropriate.
+* HTTPS for all production communication.
+
+Select package versions compatible with the existing project and supported PHP/Laravel versions.
+
+Do not introduce React, Vue, microservices, Kubernetes, Redis, or additional infrastructure unless actual requirements justify them.
+
+Prefer a well-structured Laravel monolith for the first production release.
+
+Use established libraries for QR generation, image processing, and validation rather than inventing cryptographic or encoding implementations.
+
+# 4. USER ROLES AND ACCESS CONTROL
+
+Implement role-based access control combined with event-specific permissions.
+
+## 4.1 System Administrator
+
+The system administrator manages the platform itself.
+
+Responsibilities include:
+
+* View and manage platform accounts.
+* Suspend or reactivate accounts according to documented policies.
+* View platform-wide event statistics.
+* Manage supported event categories.
+* Manage approved invitation templates.
+* Configure platform-wide settings.
+* Manage subscription plans if monetization is enabled.
+* View system-level operational and audit information.
+* Review reported abuse and support requests.
+* Manage integration configuration through secure settings.
+
+The system administrator must not automatically have unrestricted access to every sensitive payment credential or plaintext guest record merely because of their role.
+
+Sensitive financial actions and access to private information must be explicitly authorized and audited.
+
+## 4.2 Event Organizer
+
+The organizer owns or manages one or more events.
+
+The organizer can:
+
+* Create, edit, publish, archive, and manage permitted events.
+* Customize event details.
+* Create invitation cards.
+* Register and import guests.
+* Issue, resend, revoke, or replace invitations.
+* Review RSVPs.
+* Manage committees and staff.
+* Configure attendance and guest categories.
+* View event financial records.
+* Manage budgets, contributions, expenses, and vendors.
+* Generate event reports.
+* Configure approved event-specific permissions.
+
+An organizer must never gain access to another organizer's private events merely by changing an ID in a URL or API request.
+
+## 4.3 Committee Members
+
+Organizers can invite committee members and assign permissions.
+
+Possible permissions include:
+
+* Guest management.
+* Invitation management.
+* Contribution recording.
+* Expense recording.
+* Budget viewing.
+* Financial report viewing.
+* Vendor management.
+* Attendance reporting.
+
+Use the principle of least privilege.
+
+A committee member must only access the functions and records explicitly assigned to them.
+
+## 4.4 Entrance Attendants
+
+Entrance attendants can:
+
+* Access assigned events.
+* Open the event check-in interface.
+* Scan or manually verify permitted invitations.
+* Record attendance.
+* See only the guest information necessary for entry verification.
+
+They must not access contribution details, private financial reports, unrelated events, or administrative functions unless separately authorized.
+
+## 4.5 Guests
+
+Guests should not need to register an account simply to open an invitation.
+
+Depending on event settings, guests can:
+
+* Open a private invitation link.
+* View permitted event information.
+* Confirm attendance.
+* Decline an invitation.
+* Submit a permitted guest count.
+* Access venue information and directions.
+* View permitted schedule details.
+
+Guest-facing pages must not expose private guest lists, contribution balances, personal phone numbers, or internal committee records.
+
+# 5. EVENT CREATION AND LIFECYCLE
+
+Support configurable event categories, including:
+
+* Wedding.
+* Sendoff.
+* Kitchen party.
+* Birthday.
+* Graduation.
+* Anniversary.
+* Engagement.
+* Corporate event.
+* Other customizable celebrations.
+
+An event should support:
+
+* Event title.
+* Event category.
+* Organizer.
+* Event date and time.
+* Time zone.
+* Venue name.
+* Venue address.
+* Optional map or directions link.
+* Event description.
+* Host names.
+* Dress code.
+* Event image or theme.
+* Invitation publication settings.
+* RSVP deadline.
+* Guest capacity.
+* Attendance rules.
+* Event status.
+* Creation and update timestamps.
+
+Support appropriate event lifecycle states, such as draft, published, completed, and archived.
+
+Define valid state transitions. Do not allow invalid status changes simply because a request supplies an arbitrary status string.
+
+Handle past events, rescheduling, cancellations, and time-zone conversions carefully.
+
+An event's date or title must be editable without breaking invitations, attendance, financial records, or other relationships.
+
+# 6. DIGITAL INVITATION CARD DESIGNER
+
+Build a professional invitation creation experience.
+
+The invitation designer is a major product feature and must receive substantial attention.
+
+## 6.1 Invitation Templates
+
+Provide configurable templates for weddings, sendoffs, kitchen parties, birthdays, and other event categories.
+
+Templates should support different visual styles, including:
+
+* Elegant luxury.
+* Minimalist.
+* Floral.
+* Traditional African-inspired.
+* Modern.
+* Formal corporate.
+* Colorful celebrations.
+
+Use actual design assets, carefully chosen typography, spacing, borders, decorative elements, and responsive layouts.
+
+Do not build the entire interface from emojis.
+
+Do not copy copyrighted invitation artwork without appropriate permission.
+
+## 6.2 Customization
+
+Allow authorized users to customize:
+
+* Host and couple names.
+* Event title.
+* Date and time.
+* Venue.
+* Invitation message.
+* Dress code.
+* Theme colors.
+* Typography where supported.
+* Background image or decoration.
+* Optional photographs.
+* RSVP information.
+* Guest name.
+* Invitation category.
+* QR code.
+* Optional event-specific instructions.
+
+Support previewing the card before publication.
+
+## 6.3 Export and Sharing
+
+Provide suitable options for:
+
+* Downloading invitation images.
+* Downloading print-ready PDFs.
+* Opening a guest-specific invitation page.
+* Copying an invitation URL.
+* Sharing through WhatsApp.
+* Sharing through supported messaging applications.
+* Printing invitations.
+
+Generated files must have reasonable size, legible text, suitable dimensions, and correct image rendering.
+
+Validate uploaded files for size, MIME type, and actual file contents.
+
+Do not expose private storage paths or internal filenames.
+
+Use private storage for sensitive guest-specific assets when appropriate.
+
+Public templates and private guest invitations must have different access rules.
+
+# 7. QR-CODE INVITATIONS AND SECURE CHECK-IN
+
+QR invitations are a critical security-sensitive feature.
+
+## 7.1 Invitation Tokens
+
+Generate a unique, unpredictable token for every invitation or independently verifiable invitation entitlement.
+
+Use cryptographically secure random generation.
+
+Do not encode sequential database IDs, telephone numbers, email addresses, financial data, or other sensitive personal information directly into QR codes.
+
+The QR code should contain an opaque verification URL or token that the server can validate.
+
+Where practical, store a cryptographic hash of the verification token and compare it securely during verification.
+
+Tokens must support revocation and replacement.
+
+If an invitation is revoked or replaced, the previous token must no longer authorize entry.
+
+## 7.2 QR Scanning
+
+Build a mobile-first scanner interface for authorized entrance attendants.
+
+The scanner must support:
+
+* Camera-based QR scanning on compatible devices.
+* Permission-denied handling.
+* Camera-unavailable handling.
+* Invalid QR codes.
+* Revoked invitations.
+* Invitations belonging to another event.
+* Already-checked-in invitations.
+* Valid invitations.
+* Manual lookup when authorized.
+* Clear, readable status messages.
+* Controlled camera startup and shutdown.
+
+Use HTTPS and browser permission requirements correctly.
+
+Do not assume every browser or device supports camera scanning.
+
+Provide a reasonable manual verification fallback.
+
+## 7.3 Duplicate Check-In Prevention
+
+The server must be the authority for check-in decisions.
+
+A successful scan must record:
+
+* Invitation identifier.
+* Event identifier.
+* Authorized attendant.
+* Check-in timestamp.
+* Verification outcome.
+* Any required audit metadata.
+
+Prevent concurrent requests from checking in the same entitlement twice.
+
+Use appropriate database transactions, uniqueness constraints, row locking, or equivalent concurrency-safe mechanisms.
+
+A browser-side check alone is insufficient.
+
+Repeated scans must produce an explicit already-used response without creating duplicate successful attendance records.
+
+## 7.4 Family and Group Invitations
+
+Support invitation configurations for:
+
+* One named guest.
+* A guest plus an allowed number of companions.
+* A family or group invitation.
+* Separate individual entitlements when independent check-in is required.
+
+The system must clearly distinguish between an invitation, the people it covers, and individual attendance records.
+
+Do not allow guests to increase their permitted attendance count by modifying browser requests.
+
+## 7.5 Offline Operation
+
+The initial release may use online verification only.
+
+Do not silently implement insecure offline acceptance.
+
+If offline scanning is later authorized, design it as a separate phase with explicit synchronization rules, signed verification data where appropriate, device authorization, conflict resolution, and clear limitations.
+
+Do not claim that offline verification can guarantee globally unique entry when multiple disconnected scanners cannot communicate.
+
+# 8. GUEST MANAGEMENT AND RSVP
+
+Implement a complete guest management module.
+
+Features:
+
+* Create and edit guest records.
+* Categorize guests.
+* Search, filter, sort, and paginate.
+* Import guests from CSV.
+* Export authorized guest records.
+* Detect possible duplicate guests.
+* Assign invitation categories.
+* Track invitation issuance and delivery attempts.
+* Track RSVP responses.
+* Track permitted companion counts.
+* Track dietary or accessibility notes only when necessary and appropriately protected.
+* Resend invitations.
+* Revoke invitations.
+* Replace invitations.
+* Track attendance.
+
+Suggested RSVP states include pending, confirmed, declined, and expired where appropriate.
+
+Do not confuse invitation delivery with RSVP confirmation.
+
+A WhatsApp share link opening successfully does not prove that the message was delivered or read.
+
+Store only information needed for the event.
+
+Validate imported data, report invalid rows, and prevent unauthorized bulk updates.
+
+Protect exports against spreadsheet formula injection and unauthorized disclosure.
+
+# 9. COMMITTEE AND EVENT STAFF MANAGEMENT
+
+Provide an event membership system.
+
+Organizers must be able to:
+
+* Invite committee members.
+* Assign event-specific roles.
+* Grant individual permissions where needed.
+* Revoke membership.
+* View membership status.
+* Record who made important changes.
+* Prevent members from accessing events they do not belong to.
+
+Implement authorization in backend policies or equivalent middleware and service-layer checks.
+
+Hiding a button in Blade is not authorization.
+
+Validate membership and permission checks on every protected server request.
+
+# 10. CONTRIBUTIONS, PLEDGES, AND FINANCIAL RECORDS
+
+Build an auditable event financial management module.
+
+## 10.1 Pledges and Contributions
+
+Support:
+
+* Contributor identification.
+* Pledged amount.
+* Amount received.
+* Outstanding pledge balance.
+* Payment date.
+* Payment method.
+* Reference number where applicable.
+* Recording committee member.
+* Notes where authorized.
+* Receipt generation.
+* Payment status.
+
+Distinguish pledged funds from received funds.
+
+Use accurate decimal or integer minor-unit representations appropriate to the currency. Never use floating-point arithmetic for authoritative financial calculations.
+
+Support Tanzanian shillings initially, while allowing future currencies.
+
+## 10.2 Financial Corrections
+
+Financial records must not be silently deleted or overwritten after they affect reports.
+
+Use a documented correction, reversal, or adjustment process.
+
+Maintain audit information identifying the responsible user, timestamp, reason, and relevant record.
+
+Protect financial reports using event-specific permissions.
+
+## 10.3 Online Payments
+
+Online or mobile-money payment integration must be implemented only after the payment provider and credentials have been selected and authorized.
+
+Before enabling real payments:
+
+* Verify official provider documentation.
+* Implement secure server-to-server communication.
+* Verify payment signatures or equivalent authentication.
+* Validate callback amounts, currencies, references, and statuses.
+* Make callbacks idempotent.
+* Prevent duplicate payment recording.
+* Support pending, successful, failed, expired, and reversed states as applicable.
+* Store provider transaction identifiers.
+* Never trust the browser's claim that a payment succeeded.
+* Never store card security codes or raw payment credentials.
+* Do not log secrets or sensitive payment payloads.
+
+Use a sandbox for integration tests.
+
+Never activate real payment processing or make financial transactions without explicit approval.
+
+If credentials are unavailable, implement a clearly identified provider abstraction or sandbox-only integration and document what remains incomplete.
+
+# 11. BUDGET, EXPENSES, AND VENDORS
+
+## 11.1 Budget Management
+
+Allow event organizers to define:
+
+* Overall estimated budget.
+* Budget categories.
+* Planned amounts.
+* Actual recorded expenses.
+* Amount committed to vendors.
+* Amount paid.
+* Remaining balances.
+* Budget variance.
+
+Reports must distinguish estimates, commitments, recorded expenses, and completed payments.
+
+## 11.2 Expenses
+
+Record:
+
+* Event.
+* Expense category.
+* Description.
+* Amount.
+* Transaction date.
+* Payee or vendor.
+* Recording user.
+* Receipt or attachment where appropriate.
+* Payment status.
+* Approval status when required.
+
+Use appropriate permission checks and audit logs.
+
+## 11.3 Vendors
+
+Manage event vendors such as:
+
+* Caterers.
+* Decorators.
+* Photographers.
+* Venues.
+* Entertainment providers.
+* Transport providers.
+* Invitation printers.
+* Other service providers.
+
+Record contact information only as needed, agreed services, quotations, deposits, payment milestones, and contract attachments where supported.
+
+Keep vendor records scoped to the appropriate event or explicitly authorized shared business account.
+
+Do not expose private vendor information publicly.
+
+# 12. DASHBOARDS AND REPORTING
+
+## 12.1 Organizer Dashboard
+
+Display accurate, database-derived metrics, including:
+
+* Active events.
+* Upcoming events.
+* Total invited guests.
+* RSVP confirmations.
+* Declined invitations.
+* Attendance count.
+* Check-in progress.
+* Total pledges.
+* Total contributions received.
+* Outstanding pledge balances.
+* Planned budget.
+* Actual recorded expenses.
+* Remaining budget.
+
+Define every metric clearly.
+
+Do not combine pledges and received contributions.
+
+Do not count duplicate check-ins.
+
+Do not use hardcoded dashboard statistics.
+
+## 12.2 Event Reports
+
+Support appropriate reports for:
+
+* Guest lists.
+* RSVP summaries.
+* Invitation status.
+* Attendance.
+* Contribution statements.
+* Pledge balances.
+* Expenses.
+* Budget performance.
+* Vendor commitments.
+
+Provide suitable export formats, including CSV and PDF where appropriate.
+
+Ensure exports follow the same authorization rules as the dashboard.
+
+# 13. NOTIFICATIONS AND MESSAGING
+
+Design a provider-independent notification layer.
+
+Potential channels include:
+
+* WhatsApp.
+* SMS.
+* Email.
+* In-application notifications.
+
+Implement integrations only after their provider, credentials, limits, pricing, and documentation have been verified.
+
+Use queues for bulk sending where appropriate.
+
+Requirements:
+
+* Respect provider rate limits.
+* Avoid accidental duplicate sends.
+* Record delivery attempts.
+* Track provider-confirmed statuses when available.
+* Retry temporary failures safely.
+* Provide useful failure reports.
+* Respect consent and applicable messaging rules.
+* Avoid exposing guest contact information in URLs or logs.
+
+Do not claim that a notification was delivered when only a sending request was queued.
+
+If an integration is not configured, present a clear unavailable or not-configured state.
+
+# 14. MULTILINGUAL SUPPORT
+
+Implement English and Swahili from the beginning.
+
+Requirements:
+
+* Centralize interface translations.
+* Avoid hardcoding interface text throughout Blade files.
+* Provide a language switcher.
+* Persist an appropriate language preference.
+* Translate validation messages and user-facing system messages.
+* Preserve language selection across navigation.
+* Format dates, numbers, and currency appropriately.
+* Allow event content to be entered in the language preferred by the organizer.
+
+Language selection must not break authentication, forms, QR verification, or responsive layouts.
+
+Use Laravel localization mechanisms where appropriate.
+
+# 15. PROFESSIONAL UI/UX REQUIREMENTS
+
+The interface must look like a modern commercial SaaS platform.
+
+Avoid amateur styling, oversized logos, excessive decorative effects, random emojis, inconsistent spacing, and unnecessary visual clutter.
+
+## 15.1 Visual Direction
+
+Use a refined design system with:
+
+* Professional typography.
+* Consistent spacing.
+* Carefully selected colors.
+* Accessible contrast.
+* Clean cards and tables.
+* Subtle shadows where appropriate.
+* Clear hierarchy.
+* Consistent buttons and form controls.
+* Attractive empty states.
+* Helpful validation and error states.
+* Appropriate loading indicators.
+* Consistent icons.
+
+The brand should communicate celebration, trust, elegance, and reliability.
+
+Use a restrained premium visual identity. Avoid forcing every screen to resemble a wedding invitation; financial tables and administration screens must prioritize clarity.
+
+## 15.2 Responsive Design
+
+Every page must be usable on:
+
+* Small Android phones.
+* Larger smartphones.
+* Tablets.
+* Laptops.
+* Desktop monitors.
+
+Prioritize mobile usability because organizers, guests, and entrance attendants may use phones.
+
+Test actual responsive behavior rather than merely adding a viewport meta tag.
+
+Requirements include:
+
+* No horizontal overflow on ordinary mobile screens.
+* Touch-friendly controls.
+* Readable tables or responsive table alternatives.
+* Properly scaled invitation previews.
+* Usable mobile navigation.
+* Accessible form controls.
+* Appropriate camera-scanner sizing.
+* Good empty, loading, success, and error states.
+
+## 15.3 Public Landing Page
+
+Build a professional public homepage featuring:
+
+* Clear value proposition.
+* Primary call to action.
+* Product benefits.
+* Invitation examples.
+* QR guest verification explanation.
+* Event management features.
+* Pricing section if pricing is approved.
+* Frequently asked questions.
+* Contact and support information.
+* Sign-in and registration links.
+
+Do not fabricate customer testimonials, user counts, partner logos, payment-provider approvals, or performance claims.
+
+## 15.4 Accessibility
+
+Use semantic HTML, keyboard-accessible navigation, meaningful labels, visible focus indicators, and appropriate screen-reader descriptions.
+
+Do not rely solely on color to indicate a financial status or QR verification result.
+
+# 16. DATABASE DESIGN AND INTEGRITY
+
+Design the database before implementing dependent features.
+
+Inspect the existing schema first if one exists.
+
+Potential entities include:
+
+* users
+* events
+* event_members
+* event_invitations
+* guests
+* invitation_guests
+* invitation_templates
+* invitation_assets
+* rsvp_responses
+* attendance_records
+* contributions
+* pledge_records or an equivalent clearly defined financial ledger
+* expenses
+* budget_categories
+* vendors
+* vendor_contracts
+* notifications
+* notification_attempts
+* audit_logs
+* subscriptions, if monetization is approved
+* payment_transactions, if online payments are approved
+
+These are proposed logical entities, not mandatory table names. Normalize the actual schema based on verified requirements.
+
+## 16.1 Database Rules
+
+* Use stable primary keys.
+* Use foreign keys.
+* Add appropriate unique constraints.
+* Add indexes based on real query patterns.
+* Use transactions for multi-record operations.
+* Define deletion and retention behavior.
+* Prevent cross-event data leakage.
+* Enforce uniqueness for invitation tokens and successful check-ins where appropriate.
+* Use appropriate decimal or integer monetary representations.
+* Handle concurrent requests safely.
+* Define timestamps and time-zone behavior consistently.
+* Use database constraints for invariants that must hold even when application logic fails.
+
+Avoid overusing JSON fields for relational information.
+
+Use JSON for genuinely flexible configuration when justified, not as a substitute for a sound relational model.
+
+Never modify an already-applied production migration destructively. Create forward migrations, back up data, and document rollback limitations.
+
+# 17. SECURITY REQUIREMENTS
+
+Security is mandatory, not an optional final step.
+
+Apply secure Laravel and OWASP-aligned practices.
+
+## 17.1 Authentication
+
+* Use a maintained authentication implementation compatible with the project.
+* Hash passwords using Laravel's supported password hashing.
+* Validate and normalize login inputs appropriately.
+* Apply login throttling.
+* Regenerate session identifiers after authentication.
+* Implement secure logout.
+* Configure session cookies securely.
+* Provide secure password-reset flows.
+* Consider multifactor authentication for privileged accounts.
+* Avoid revealing whether an account exists during sensitive authentication flows where inappropriate.
+
+## 17.2 Authorization
+
+* Enforce server-side authorization for every protected resource.
+* Scope event queries to authorized memberships.
+* Prevent insecure direct object reference vulnerabilities.
+* Test cross-user and cross-event access.
+* Do not rely on hidden form fields or frontend role checks.
+* Prevent privilege escalation through mass assignment.
+* Explicitly define allowed editable attributes.
+
+## 17.3 Web Security
+
+* Use CSRF protection for applicable browser requests.
+* Escape untrusted content in Blade.
+* Validate all inputs server-side.
+* Use parameterized database access.
+* Prevent stored and reflected XSS.
+* Prevent SQL injection.
+* Validate uploaded files.
+* Protect against malicious file uploads and path traversal.
+* Use safe redirects.
+* Apply suitable security headers.
+* Rate-limit sensitive endpoints.
+* Protect invitation and RSVP endpoints against abuse.
+* Avoid leaking stack traces in production.
+
+## 17.4 Secrets and Configuration
+
+* Keep secrets out of source control.
+* Use environment variables or an appropriate secrets-management mechanism.
+* Provide a safe `.env.example` without real credentials.
+* Never print secrets into logs or reports.
+* Never request production passwords from the project owner in ordinary chat.
+* Document how the operator configures credentials locally or through the deployment environment.
+
+## 17.5 Privacy and Auditability
+
+Collect only necessary personal information.
+
+Provide appropriate retention and deletion procedures.
+
+Audit sensitive changes such as:
+
+* Role and permission changes.
+* Invitation revocation.
+* Financial adjustments.
+* Expense approvals.
+* Successful check-ins.
+* Administrative actions.
+* Payment state changes.
+
+Protect audit logs against ordinary users modifying or deleting their history.
+
+Do not put passwords, raw verification tokens, or payment secrets into audit logs.
+
+# 18. PERFORMANCE AND RELIABILITY
+
+Implement:
+
+* Database pagination.
+* Eager loading where appropriate.
+* Proper indexes.
+* Safe bulk import processing.
+* Background jobs for appropriate long-running tasks.
+* Queue failure handling.
+* Cache invalidation where caching is used.
+* Clear error handling.
+* Request validation.
+* Database transaction boundaries.
+* Appropriate timeout handling.
+* Health checks that do not disclose sensitive information.
+
+Avoid N+1 database queries.
+
+Do not cache private data across users or events without correctly scoped cache keys and invalidation.
+
+Avoid storing large generated files directly in database records.
+
+Do not add complex infrastructure without demonstrating a need.
+
+# 19. TESTING REQUIREMENTS
+
+Testing is part of implementation, not an optional activity.
+
+Use the existing test framework or establish a suitable Laravel-compatible one.
+
+## 19.1 Automated Tests
+
+Cover:
+
+* Registration and authentication.
+* Event creation and updates.
+* Event ownership and membership.
+* Authorization failures.
+* Invitation generation.
+* Invitation revocation.
+* RSVP handling.
+* Guest imports and validation.
+* QR verification.
+* Duplicate check-in prevention.
+* Concurrent check-in behavior where practical.
+* Contribution recording.
+* Financial corrections.
+* Expense calculations.
+* Permission-restricted reports.
+* Language switching.
+* Notification failure handling.
+* Upload validation.
+* Cross-event and cross-user isolation.
+
+## 19.2 Frontend Tests
+
+Where tooling permits, test:
+
+* Mobile navigation.
+* Invitation previews.
+* Form validation.
+* QR scanner states.
+* Loading and error states.
+* Responsive layouts.
+* Keyboard accessibility.
+* Guest-facing invitation pages.
+
+## 19.3 Integration Tests
+
+Use controlled test environments and provider sandboxes.
+
+Never use real guest contact lists, real financial transfers, or production payment credentials in automated tests.
+
+## 19.4 Test Reporting
+
+For each phase, report:
+
+* Tests executed.
+* Tests passed.
+* Tests failed.
+* Tests not executed.
+* Known defects.
+* Security concerns.
+* Manual verification still required.
+
+Do not describe untested behavior as production-ready.
+
+# 20. DEPLOYMENT AND VPS HARDENING
+
+Prepare the application for deployment to a properly secured Ubuntu VPS.
+
+Do not deploy without explicit authorization.
+
+When deployment is authorized, follow an approved checklist covering:
+
+* Supported Ubuntu release.
+* Security updates.
+* SSH hardening.
+* Non-root deployment practices.
+* Firewall configuration.
+* Restricted PostgreSQL network access.
+* Nginx configuration.
+* PHP-FPM configuration.
+* TLS certificate issuance and renewal.
+* Correct file ownership and permissions.
+* Laravel production environment configuration.
+* Secure session and cookie settings.
+* Queue workers where required.
+* Scheduled tasks where required.
+* Log rotation and monitoring.
+* Database backup and restoration.
+* Storage permissions.
+* Rate limiting and abuse protection.
+* Disk-space monitoring.
+* Application health checks.
+
+Do not blindly disable SSH authentication methods or firewall rules that may lock the operator out.
+
+Keep a verified administrative access path before applying remote security changes.
+
+Do not expose PostgreSQL publicly unless a documented and justified architecture requires it. Prefer local or private network connectivity.
+
+Do not run Laravel migrations automatically on production startup.
+
+Require a reviewed backup and migration plan before production schema changes.
+
+Test database restoration, not just backup creation.
+
+Never claim a backup is valid until restoration has been verified.
+
+# 21. MONETIZATION — FUTURE-READY, NOT PREMATURE
+
+Design the platform so paid plans can be introduced without rebuilding the application.
+
+Possible future plans:
+
+* Free event.
+* Premium event.
+* Professional planner.
+* Business or agency account.
+
+Potential limits include:
+
+* Number of active events.
+* Invitation customization.
+* Guest capacity.
+* Messaging credits.
+* Reporting options.
+* Storage allowance.
+* Planner team features.
+
+Do not invent final prices.
+
+Do not introduce payment gates that prevent legitimate access to core features unless the project owner has approved the pricing and entitlement rules.
+
+Subscription enforcement must happen on the backend.
+
+# 22. IMPLEMENTATION PHASES
+
+Use the following proposed phases. Refine them after repository inspection.
+
+**Phase 0 — Discovery and architecture**
+
+Inspect the repository, dependencies, database, existing features, security risks, and deployment constraints. Produce an architecture proposal and implementation roadmap. Make no code changes.
+
+**Phase 1 — Foundation**
+
+Implement or verify authentication, account management, application layout, localization foundation, authorization architecture, and initial database migrations.
+
+**Phase 2 — Event management**
+
+Implement event creation, event editing, event lifecycle, event membership, permissions, and organizer dashboard.
+
+**Phase 3 — Invitation designer**
+
+Implement templates, card customization, previews, image/PDF export, and invitation sharing.
+
+**Phase 4 — Guest management and RSVP**
+
+Implement guest records, categories, CSV import/export, invitation issuance, RSVP handling, and guest-facing pages.
+
+**Phase 5 — QR verification and attendance**
+
+Implement secure tokens, QR generation, mobile scanning, server-side validation, duplicate prevention, revocation, and attendance reports.
+
+**Phase 6 — Committee and financial management**
+
+Implement assigned committee roles, pledges, received contributions, expenses, budgets, financial corrections, and audit trails.
+
+**Phase 7 — Vendors and reporting**
+
+Implement vendor records, financial reports, guest reports, attendance summaries, and exports.
+
+**Phase 8 — Notifications and integrations**
+
+Implement approved messaging providers and, if authorized, online payment integrations.
+
+**Phase 9 — Security and quality assurance**
+
+Perform authorization testing, security review, responsive testing, performance checks, regression testing, and accessibility checks.
+
+**Phase 10 — Production preparation**
+
+Complete deployment documentation, VPS hardening plan, backup and restoration procedures, monitoring, and final acceptance testing.
+
+These phases are a roadmap, not permission to execute all of them.
+
+Only implement the phase explicitly approved by the project owner.
+
+# 23. REQUIRED DELIVERABLES FOR PHASE 0
+
+Your immediate assignment is Phase 0 only.
+
+Deliver a written report containing:
+
+1. Repository and technology inventory.
+2. Existing functionality and incomplete areas.
+3. Database and migration assessment.
+4. Recommended architecture.
+5. Proposed entity relationships.
+6. Authentication and authorization design.
+7. Invitation and QR security design.
+8. Financial data integrity design.
+9. Required packages and justification.
+10. UI/UX implementation strategy.
+11. Testing strategy.
+12. Deployment and security risks.
+13. Ordered implementation roadmap.
+14. Dependencies and decisions requiring owner approval.
+15. A list of potentially destructive operations that must remain prohibited without explicit authorization.
+
+If the repository is empty, provide a clean proposed structure and initial setup plan instead of pretending an existing application was inspected.
+
+Clearly separate verified facts from assumptions and recommendations.
+
+Do not generate large volumes of code during this phase.
+
+# 24. REQUIRED COMPLETION REPORT FOR EVERY APPROVED PHASE
+
+After implementing an authorized phase, provide:
+
+**A. Objective**
+
+* What the phase was intended to achieve.
+
+**B. Implementation**
+
+* Features completed.
+* Important architectural decisions.
+
+**C. Changed files**
+
+* Exact file paths.
+* Brief explanation of each significant change.
+
+**D. Database**
+
+* Migrations created.
+* Schema changes.
+* Constraints and indexes.
+* Whether migrations were actually executed.
+* Any required manual operations.
+
+**E. Testing**
+
+* Commands executed.
+* Test results.
+* Failed or skipped tests.
+* Manual verification requirements.
+
+**F. Security**
+
+* Authorization checks implemented.
+* Relevant security tests.
+* Remaining risks.
+
+**G. Known limitations**
+
+* Unimplemented features.
+* Missing credentials.
+* External dependencies.
+* Unresolved bugs.
+
+**H. Next phase**
+
+* Recommended next phase and prerequisites.
+
+After this report, STOP and wait for explicit approval.
+
+# 25. FINAL ACCEPTANCE CRITERIA
+
+The platform will not be considered production-ready merely because all pages load.
+
+The applicable release criteria include:
+
+* Organizers can securely create and manage multiple events.
+* Event data remains isolated between unauthorized users.
+* Invitation templates produce usable, correctly rendered cards.
+* Invitations can be shared and opened securely.
+* QR tokens are unpredictable, revocable, and validated on the server.
+* Unauthorized and revoked invitations are rejected.
+* Duplicate successful check-ins are prevented.
+* Guests can submit RSVPs according to event rules.
+* Financial totals distinguish pledges, received contributions, and expenses.
+* Financial changes are auditable.
+* Role and event permissions are enforced server-side.
+* The interface works on supported mobile and desktop layouts.
+* English and Swahili interfaces function correctly.
+* Automated tests cover the critical workflows.
+* External integrations are verified or clearly marked as unavailable.
+* Production configuration does not expose secrets.
+* Backup restoration and deployment procedures have been tested before launch.
+* Remaining limitations and risks are documented honestly.
+
+Not every acceptance criterion must be completed in Phase 0. Each subsequent phase must satisfy its own agreed acceptance criteria before moving forward.
+
+# FINAL INSTRUCTION
+
+Begin with Phase 0.
+
+Inspect the actual project, establish the facts, and produce the architecture and implementation report.
+
+Do not modify code during Phase 0.
+
+Do not install packages, execute migrations, alter environment variables, change production infrastructure, or deploy.
+
+Do not continue to Phase 1 automatically.
+
+Wait for the project owner's explicit approval before making any implementation changes.
+
+**Build ShamraShamra carefully, securely, and professionally. Correctness, maintainability, privacy, and data integrity take priority over speed and superficial visual progress.**
