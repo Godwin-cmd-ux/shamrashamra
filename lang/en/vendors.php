@@ -1,0 +1,46 @@
+<?php
+
+return [
+    'heading' => 'Vendors',
+    'add' => 'Add vendor',
+    'added' => 'Vendor added.',
+    'updated' => 'Vendor updated.',
+    'deleted' => 'Vendor deleted.',
+    'delete_blocked' => 'This vendor is linked to recorded expenses — set the vendor to cancelled instead.',
+    'empty' => 'No vendors recorded yet.',
+    'columns' => [
+        'name' => 'Vendor',
+        'type' => 'Type',
+        'contact' => 'Contact',
+        'agreed' => 'Agreed amount',
+        'deposit' => 'Deposit',
+        'status' => 'Status',
+    ],
+    'fields' => [
+        'name' => 'Name',
+        'type' => 'Service type',
+        'contact_name' => 'Contact person',
+        'phone' => 'Phone',
+        'email' => 'Email',
+        'services' => 'Agreed services',
+        'agreed_amount' => 'Agreed amount',
+        'deposit_amount' => 'Deposit amount',
+        'status' => 'Status',
+        'notes' => 'Notes',
+    ],
+    'types' => [
+        'caterer' => 'Caterer',
+        'decorator' => 'Decorator',
+        'photographer' => 'Photographer',
+        'venue' => 'Venue',
+        'entertainment' => 'Entertainment',
+        'transport' => 'Transport',
+        'printer' => 'Invitation printer',
+        'other' => 'Other',
+    ],
+    'status' => [
+        'active' => 'Active',
+        'completed' => 'Completed',
+        'cancelled' => 'Cancelled',
+    ],
+];

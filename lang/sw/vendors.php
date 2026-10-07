@@ -1,0 +1,46 @@
+<?php
+
+return [
+    'heading' => 'Wahudumu',
+    'add' => 'Ongeza mhudumu',
+    'added' => 'Mhudumu ameongezwa.',
+    'updated' => 'Mhudumu amehaririwa.',
+    'deleted' => 'Mhudumu amefutwa.',
+    'delete_blocked' => 'Mhudumu huu amehusishwa na matumizi yaliyorekodiwa — weka hali kuwa "Imekamilika" badala ya kufuta.',
+    'empty' => 'Bado hakuna wahudumu.',
+    'columns' => [
+        'name' => 'Mhudumu',
+        'type' => 'Aina',
+        'contact' => 'Mawasiliano',
+        'agreed' => 'Kiasi kilikubaliana',
+        'deposit' => 'Amana',
+        'status' => 'Hali',
+    ],
+    'fields' => [
+        'name' => 'Jina',
+        'type' => 'Aina ya huduma',
+        'contact_name' => 'Mtu wa kuwasiliana',
+        'phone' => 'Simu',
+        'email' => 'Barua pepe',
+        'services' => 'Huduma zilizokubaliana',
+        'agreed_amount' => 'Kiasi kilikubaliana',
+        'deposit_amount' => 'Kiasi cha amana',
+        'status' => 'Hali',
+        'notes' => 'Maelezo',
+    ],
+    'types' => [
+        'caterer' => 'Upishi',
+        'decorator' => 'Mapambo',
+        'photographer' => 'Mchapaji wa picha',
+        'venue' => 'Eneo',
+        'entertainment' => 'Burudani',
+        'transport' => 'Usafiri',
+        'printer' => 'Mchapaji wa mialiko',
+        'other' => 'Nyingine',
+    ],
+    'status' => [
+        'active' => 'Hai',
+        'completed' => 'Imekamilika',
+        'cancelled' => 'Imeghairiwa',
+    ],
+];
